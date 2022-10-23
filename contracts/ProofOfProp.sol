@@ -18,7 +18,7 @@ contract ProofOfProp {
 
     UserParameters[] public users;
 
-    function addUser(string memory _certificate, string memory _date, string memory _title, address _address, string memory _name, string _additional, string memory _hash) public {
+    function addUser(string memory _certificate, string memory _date, string memory _title, address _address, string memory _name, string memory _additional, string memory _hash) public {
         users.push(UserParameters(_certificate, _date, _title, _address, _name, _additional, _hash));
     }
 }
