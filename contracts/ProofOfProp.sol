@@ -22,4 +22,3 @@ contract ProofOfProp {
         users.push(UserParameters(_certificate, _date, _title, _address, _name, _additional, _hash));
     }
 }
-
