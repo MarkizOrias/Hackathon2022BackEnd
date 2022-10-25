@@ -8,12 +8,12 @@ contract ProofOfProp is Ownable {
     address payable[] public clients; // An array with clients' addresses (funders)
     uint256 public usdMinimumFee; // A fee variable
     uint256 public usdEntryFee; // variable
-    address payable owner; // Our owner wallet address
+    address payable contract_owner; // Our owner wallet address
     AggregatorV3Interface internal ethUsdPriceFeed;
 
-    modifier onlyOwner() {
+    modifier onlyOwner() override {
         require(
-            msg.sender == owner,
+            msg.sender == contract_owner,
             "Your account address is not an owner of the contract"
         );
         //run this than...
@@ -22,7 +22,7 @@ contract ProofOfProp is Ownable {
     }
 
     function showOwner() public view returns (address) {
-        return owner;
+        return contract_owner;
     }
 
     constructor(address _priceFeedAddress) {
@@ -82,8 +82,8 @@ contract ProofOfProp is Ownable {
     }
 
     function withdraw() public payable onlyOwner {
-        require(msg.sender == owner);
-        msg.sender.transfer(address payable (this).balance);
+        require(msg.sender == contract_owner);
+        payable(msg.sender).transfer(address(this).balance);
         //this is a contract we are in, address is the address of a contract.
         //balance is the current balance on a contract (a method)
         //msg.sender - whoever calls this function
@@ -98,6 +98,6 @@ contract ProofOfProp is Ownable {
             addressToAmountFunded[client] = 0;
         }
         //loop through all clients, read their address from an array and nullify their balances
-        clients = new address[](0); //???
+        clients = new address payable[](0); //???
     }
 }
