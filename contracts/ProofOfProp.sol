@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import "@chainlink/contracts/src/v0.6/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ProofOfProp is Ownable {
+    mapping(address => uint256) public addressToAmountFunded;
     address payable[] public clients; // An array with clients' addresses (funders)
     uint256 public usdMinimumFee; // A fee variable
-    address owner; // Our owner wallet address
+    uint256 public usdEntryFee; // variable
+    address payable owner; // Our owner wallet address
     AggregatorV3Interface internal ethUsdPriceFeed;
 
     modifier onlyOwner() {
@@ -23,7 +25,7 @@ contract ProofOfProp is Ownable {
         return owner;
     }
 
-    constructor(address _priceFeedAddress) public {
+    constructor(address _priceFeedAddress) {
         ethUsdPriceFeed = AggregatorV3Interface(_priceFeedAddress); // Assignment of price feed variable
         usdMinimumFee = 50 * (10**18); // Assignment of minimum fee value
     }
@@ -33,7 +35,7 @@ contract ProofOfProp is Ownable {
             msg.value >= getMinimumFee(),
             "Not enough ETH! Entry below minimum fee in USD"
         ); // Check if a payment is equal or above minimum fee
-        clients.push(msg.sender); // Pushing address to the clients array
+        clients.push(payable(msg.sender)); // Pushing address to the clients array
     }
 
     function getMinimumFee() public view returns (uint256) {
@@ -81,7 +83,7 @@ contract ProofOfProp is Ownable {
 
     function withdraw() public payable onlyOwner {
         require(msg.sender == owner);
-        msg.sender.transfer(address(this).balance);
+        msg.sender.transfer(address payable (this).balance);
         //this is a contract we are in, address is the address of a contract.
         //balance is the current balance on a contract (a method)
         //msg.sender - whoever calls this function
