@@ -7,7 +7,7 @@ contract ProofOfPropCreator {
 
     // certificatesStorageArray -> it allows you to search contracts by index
     // ToDo: mapping, which allows you to search contract you own
-    mapping(address => address[]) public addressToContract;
+    mapping(address => address) public addressToContract;
     
     ProofOfProp[] public certificatesStorageArray;
 
