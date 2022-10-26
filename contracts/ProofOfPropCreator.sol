@@ -25,14 +25,13 @@ contract ProofOfPropCreator {
         address _address,
         string memory _name,
         string memory _additional,
-        string memory _hash,
-        address _priceFeedAddress) public payable {
+        string memory _hash) public payable {
             // ToDo :
             // To use this function client has to pay >= minimumFee.
             // Money All Clients pay should be stored on ProofOfPropCreator Contract, so as owners of that Contract can withdraw it.
             require(msg.value >= getMinimumFee(), "You need to pay more ETH to create certificate!");
 
-            ProofOfProp certificateStorage = new ProofOfProp(_certificate, _date, _title, _address, _name, _additional, _hash, _priceFeedAddress);
+            ProofOfProp certificateStorage = new ProofOfProp(_certificate, _date, _title, _address, _name, _additional, _hash);
             // Below adding new Certificate(Contract) to array, which contains all certificates ever created by all clients.
             certificatesStorageArray.push(certificateStorage);
             // Below is mapping Client address with all Certificates(Contracts) he deployed (tracking all certificates, which given Client is owner of).
@@ -53,7 +52,7 @@ contract ProofOfPropCreator {
     }
 
     // ToDo : Below function allows us as Owners of this contract to withdraw money gathered on this contract.
-    function withdraw() payable onlyOwner public {
+    // function withdraw() payable onlyOwner public {
 
-    } 
+    // } 
 }
