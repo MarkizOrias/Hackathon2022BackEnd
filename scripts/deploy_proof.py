@@ -1,9 +1,5 @@
 from brownie import ProofOfProp, MockV3Aggregator, network, config
-from scripts.helpful_scripts import (
-    deploy_mocks,
-    get_account,
-    LOCAL_BLOCKCHAIN_ENVIRONMENTS,
-)
+from scripts.helpful_scripts import (deploy_mocks, get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS)
 from web3 import Web3
 
 
