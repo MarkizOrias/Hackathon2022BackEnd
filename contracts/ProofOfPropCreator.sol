@@ -5,11 +5,8 @@ import "./ProofOfProp.sol";
 
 contract ProofOfPropCreator {
 
-    // certificatesStorageArray -> it allows you to search contracts by index
-    // ToDo: mapping, which allows you to search contract you own
-    mapping(address => address) public addressToContract;
-    
-    ProofOfProp[] public certificatesStorageArray;
+    mapping(address => address[]) private addressToContract;
+    ProofOfProp[] private certificatesStorageArray;
 
     function addCertificate(
         string memory _certificate,
@@ -22,16 +19,10 @@ contract ProofOfPropCreator {
         address _priceFeedAddress) public {
             ProofOfProp certificateStorage = new ProofOfProp(_certificate, _date, _title, _address, _name, _additional, _hash, _priceFeedAddress);
             certificatesStorageArray.push(certificateStorage);
-
-            // ToDo: mapping, which allows you to search contract you own
-            addressToContract[msg.sender] = address(certificateStorage);
-            // addressToContract[msg.sender].push(address(certificateStorage)); *Not Working !!!*
+            addressToContract[msg.sender].push(address(certificateStorage));
     }
 
-    // ToDo: mapping, which allows you to search contract you own
-    function getCertificateYouOwn(address _yourAddress) public view returns (ProofOfProp[] memory) {
-        if(msg.sender == _yourAddress){
-            return certificatesStorageArray;
-        }
+    function getCertificateYouOwn(address _yourAddress) public view returns (address[] memory) {
+        return addressToContract[_yourAddress];
     }
 }
