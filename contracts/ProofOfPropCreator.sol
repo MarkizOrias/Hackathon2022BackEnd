@@ -38,11 +38,11 @@ contract ProofOfPropCreator {
         string memory _name,
         string memory _additional,
         string memory _hash
-    ) public payable returns (address) {
+    ) public payable {
         // ToDo :
         // To use this function client has to pay >= minimumFee.
         // Money All Clients pay should be stored on ProofOfPropCreator Contract, so as owners of that Contract can withdraw it.
-
+        require(msg.value >= getMinimumFee(), "Not Enough ETH Sir, you have to pay to create certificate!");
         ProofOfProp certificateStorage = new ProofOfProp(
             _certificate,
             _date,
@@ -56,7 +56,7 @@ contract ProofOfPropCreator {
         certificatesStorageArray.push(certificateStorage);
         // Below is mapping Client address with all Certificates(Contracts) he deployed (tracking all certificates, which given Client is owner of).
         addressToContract[msg.sender].push(address(certificateStorage));
-        return address(certificateStorage); // MO: to read deployed POP
+        //return address(certificateStorage); // MO: to read deployed POP
     }
 
     // Neftyr: function that returns last certificate
@@ -89,7 +89,7 @@ contract ProofOfPropCreator {
     }
 
     // ToDo : Below function allows us as Owners of this contract to withdraw money gathered on this contract.
-    // function withdraw() payable onlyOwner public {
-
-    // }
+    function withdraw() public payable {
+        payable(msg.sender).transfer(address(this).balance);
+    }
 }

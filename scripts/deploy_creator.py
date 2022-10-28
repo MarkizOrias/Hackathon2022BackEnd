@@ -1,3 +1,4 @@
+
 from brownie import ProofOfPropCreator, MockV3Aggregator, network, config
 from scripts.helpful_scripts import (
     deploy_mocks,
@@ -8,9 +9,10 @@ from scripts.helpful_scripts import (
 
 def main():
     deploy_POP_Creator()
-    # fund() Disabled as requested
+    # fund() # Disabled as requested
     show_balance()
     deploy_POP()
+    show_balance()
 
 
 def deploy_POP_Creator():
@@ -40,7 +42,7 @@ def deploy_POP_Creator():
     return proof_of_prop_creator
 
 
-# MO: Disabled as requested
+# MO: Disabled as it is not required
 # def fund():
 #     proof_of_prop_creator = ProofOfPropCreator[-1]
 #     account = get_account()
@@ -61,7 +63,11 @@ def show_balance():
 
 # Neftyr: under development
 def deploy_POP():
+    account = get_account()
     proof_of_prop_creator = ProofOfPropCreator[-1]
+    # Just to make sure fee will be covered, add some Wei to it: 100000000
+    fee = proof_of_prop_creator.getMinimumFee() + 10 ** 8
+    # Below deploy is paid from {"from": account} -> so we have to put account of our client here.
     pop_deploy = proof_of_prop_creator.addCertificate(
         "certificate",
         "date",
@@ -70,7 +76,7 @@ def deploy_POP():
         "name",
         "additional",
         "hash",
-        {"from": proof_of_prop_creator},
+        {"from": account, "value": fee},
     )
     pop_deploy.wait(1)
     lastCert = proof_of_prop_creator.getLastCertificate()
