@@ -1,4 +1,3 @@
-
 from brownie import ProofOfPropCreator, MockV3Aggregator, network, config
 from scripts.helpful_scripts import (
     deploy_mocks,
@@ -9,7 +8,7 @@ from scripts.helpful_scripts import (
 
 def main():
     deploy_POP_Creator()
-    fund()
+    # fund() Disabled as requested
     show_balance()
     deploy_POP()
 
@@ -41,18 +40,19 @@ def deploy_POP_Creator():
     return proof_of_prop_creator
 
 
-def fund():
-    proof_of_prop_creator = ProofOfPropCreator[-1]
-    account = get_account()
-    minimum_fee = proof_of_prop_creator.getMinimumFee()
-    print(minimum_fee)
-    print(f"The current entry fee is {minimum_fee}")
-    print("Funding")
-    proof_of_prop_creator.fund({"from": account, "value": minimum_fee})
-    print("Funded!")
+# MO: Disabled as requested
+# def fund():
+#     proof_of_prop_creator = ProofOfPropCreator[-1]
+#     account = get_account()
+#     minimum_fee = proof_of_prop_creator.getMinimumFee()
+#     print(minimum_fee)
+#     print(f"The current entry fee is {minimum_fee}")
+#     print("Funding")
+#     proof_of_prop_creator.fund({"from": account, "value": minimum_fee})
+#     print("Funded!")
 
 
-# GB: testing purpose - read balance during development
+# MO: testing purpose - read balance during development
 def show_balance():
     proof_of_prop_creator = ProofOfPropCreator[-1]
     current_balance = proof_of_prop_creator.showBalance()
@@ -70,9 +70,9 @@ def deploy_POP():
         "name",
         "additional",
         "hash",
-        {"from": proof_of_prop_creator}
+        {"from": proof_of_prop_creator},
     )
     pop_deploy.wait(1)
     lastCert = proof_of_prop_creator.getLastCertificate()
-    print(f'Transaction: {pop_deploy}')
-    print(f'Last Certificate: {lastCert}')
+    print(f"Transaction: {pop_deploy}")
+    print(f"Last Certificate: {lastCert}")
