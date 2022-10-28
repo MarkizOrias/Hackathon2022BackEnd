@@ -8,8 +8,8 @@ contract ProofOfPropCreator {
     mapping(address => address[]) private addressToContract;
     ProofOfProp[] private certificatesStorageArray;
 
-    mapping(address => uint256) public addressToAmountFunded; // GB
-    address[] public propClients; // GB
+    mapping(address => uint256) public addressToAmountFunded; // MO
+    address[] public propClients; // MO
 
     uint256 public usdEntryFee; // variable storing minimum fee
     AggregatorV3Interface internal ethUsdPriceFeed;
@@ -19,15 +19,15 @@ contract ProofOfPropCreator {
         usdEntryFee = 50 * (10**18);
     }
 
-    // GB: created fund function, moved require from addCertificate
-    function fund() public payable {
-        require(
-            msg.value >= getMinimumFee(),
-            "You need to pay more ETH to create certificate!"
-        );
-        addressToAmountFunded[msg.sender] += msg.value;
-        propClients.push(msg.sender);
-    }
+    // MO: created fund function, moved require from addCertificate => disabled as requested
+    // function fund() public payable {
+    //     require(
+    //         msg.value >= getMinimumFee(),
+    //         "You need to pay more ETH to create certificate!"
+    //     );
+    //     addressToAmountFunded[msg.sender] += msg.value;
+    //     propClients.push(msg.sender);
+    // }
 
     // Client Needs to pay us in order to use "addCertificate" function.
     function addCertificate(
@@ -56,12 +56,12 @@ contract ProofOfPropCreator {
         certificatesStorageArray.push(certificateStorage);
         // Below is mapping Client address with all Certificates(Contracts) he deployed (tracking all certificates, which given Client is owner of).
         addressToContract[msg.sender].push(address(certificateStorage));
-        return address(certificateStorage); // GB: to read deployed POP
+        return address(certificateStorage); // MO: to read deployed POP
     }
 
     // Neftyr: function that returns last certificate
     function getLastCertificate() public view returns (address) {
-        uint lastIndex = certificatesStorageArray.length - 1;
+        uint256 lastIndex = certificatesStorageArray.length - 1;
         return address(certificatesStorageArray[lastIndex]);
     }
 
@@ -82,7 +82,7 @@ contract ProofOfPropCreator {
         return costToEnter; // for testing
     }
 
-    // GB: testing purpose - read balance during development. REMOVE IN PRODUCTION VERSION!!!
+    // MO: testing purpose - read balance during development. REMOVE IN PRODUCTION VERSION!!!
     function showBalance() public view returns (uint256) {
         uint256 POPbalance = address(this).balance;
         return POPbalance;
