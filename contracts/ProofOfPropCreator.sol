@@ -83,12 +83,14 @@ contract ProofOfPropCreator {
     }
 
     // MO: testing purpose - read balance during development. REMOVE IN PRODUCTION VERSION!!!
+    // Neftyr: ToDo: Add onlyOwner parameter, so we as owners can check balance of our creator contract
     function showBalance() public view returns (uint256) {
         uint256 POPbalance = address(this).balance;
         return POPbalance;
     }
 
-    // ToDo : Below function allows us as Owners of this contract to withdraw money gathered on this contract.
+    // ToDo: Below function allows us as Owners of this contract to withdraw money gathered on this contract.
+    // ToDo: Add onlyOwner parameter
     function withdraw() public payable {
         payable(msg.sender).transfer(address(this).balance);
     }

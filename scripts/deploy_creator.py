@@ -8,11 +8,11 @@ from scripts.helpful_scripts import (
 
 
 def main():
-    deploy_POP_Creator()
+    deploy_POP_Creator() # Neftyr: deploy creator contract (factory)
     # fund() # Disabled as requested
-    show_balance()
-    deploy_POP()
-    show_balance()
+    show_balance() # Neftyr: show balance before any deployments
+    deploy_POP() # Neftyr: deploy contract for Client
+    show_balance() # Neftyr: show balance after client certificate deployment
 
 
 def deploy_POP_Creator():
@@ -61,7 +61,7 @@ def show_balance():
     print(f"Current balance of creator contract is: {current_balance}")
 
 
-# Neftyr: under development
+# Neftyr: To Be Moved Into "deploy_cert.py"
 def deploy_POP():
     account = get_account()
     proof_of_prop_creator = ProofOfPropCreator[-1]

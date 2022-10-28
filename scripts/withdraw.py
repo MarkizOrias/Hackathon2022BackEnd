@@ -7,6 +7,7 @@ def main():
     withdraw()
 
 
+# Neftyr: Below Will Withdraw All Funds From Creator Contract
 def withdraw():
     creator = ProofOfPropCreator[-1]
     account = get_account()

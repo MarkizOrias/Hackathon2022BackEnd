@@ -8,6 +8,9 @@ def main():
     get_cert()
 
 
+# Neftyr:
+# TODO (We Can Add Small Fee Here)
+# This Function Is For Client To Show Them, Which Contracts(Certificates) They Own
 def get_cert():
     account = get_account()
     proof_of_prop_creator = ProofOfPropCreator[-1]

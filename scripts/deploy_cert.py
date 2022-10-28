@@ -8,7 +8,7 @@ def main():
     show_balance()
 
 
-# Neftyr: under development
+# Neftyr: Look Comments
 def deploy_certificate():
     account = get_account()
     proof_of_prop_creator = ProofOfPropCreator[-1]
