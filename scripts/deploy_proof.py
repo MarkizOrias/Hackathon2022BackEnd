@@ -62,7 +62,6 @@ def show_balance():
 # Neftyr: under development
 def deploy_POP():
     proof_of_prop_creator = ProofOfPropCreator[-1]
-    account = get_account()
     pop_deploy = proof_of_prop_creator.addCertificate(
         "certificate",
         "date",
@@ -71,7 +70,7 @@ def deploy_POP():
         "name",
         "additional",
         "hash",
-        {"from": account}
+        {"from": proof_of_prop_creator}
     )
     pop_deploy.wait(1)
     lastCert = proof_of_prop_creator.getLastCertificate()
