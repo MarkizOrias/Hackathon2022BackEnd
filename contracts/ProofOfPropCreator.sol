@@ -59,6 +59,12 @@ contract ProofOfPropCreator {
         return address(certificateStorage); // GB: to read deployed POP
     }
 
+    // Neftyr: function that returns last certificate
+    function getLastCertificate() public view returns (address) {
+        uint lastIndex = certificatesStorageArray.length - 1;
+        return address(certificatesStorageArray[lastIndex]);
+    }
+
     // Below Function Allows Client To Check All Certificate(Contracts) He Owns.
     function getCertificateYouOwn(address _yourAddress)
         public

@@ -1,4 +1,4 @@
-import string
+
 from brownie import ProofOfPropCreator, MockV3Aggregator, network, config
 from scripts.helpful_scripts import (
     deploy_mocks,
@@ -11,7 +11,7 @@ def main():
     deploy_POP_Creator()
     fund()
     show_balance()
-    # deploy_POP() # GB: under development
+    deploy_POP()
 
 
 def deploy_POP_Creator():
@@ -59,16 +59,21 @@ def show_balance():
     print(f"Current balance of creator contract is: {current_balance}")
 
 
-# GB: under development
-# def deploy_POP():
-#     proof_of_prop_creator = ProofOfPropCreator[-1]
-#     pop_deploy = proof_of_prop_creator.addCertificate(
-#         "certificate",
-#         "date",
-#         "title",
-#         proof_of_prop_creator,
-#         "name",
-#         "additional",
-#         "hash",
-#     )
-#     print(pop_deploy)
+# Neftyr: under development
+def deploy_POP():
+    proof_of_prop_creator = ProofOfPropCreator[-1]
+    account = get_account()
+    pop_deploy = proof_of_prop_creator.addCertificate(
+        "certificate",
+        "date",
+        "title",
+        proof_of_prop_creator,
+        "name",
+        "additional",
+        "hash",
+        {"from": account}
+    )
+    pop_deploy.wait(1)
+    lastCert = proof_of_prop_creator.getLastCertificate()
+    print(f'Transaction: {pop_deploy}')
+    print(f'Last Certificate: {lastCert}')
