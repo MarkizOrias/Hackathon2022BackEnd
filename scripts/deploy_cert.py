@@ -19,7 +19,7 @@ def deploy_certificate():
         "certificate",
         "date",
         "title",
-        proof_of_prop_creator,
+        account, # Niferu: "proof_of_prop_creator" changed into "account" as owner of generated cert is our Client.
         "name",
         "additional",
         "hash",

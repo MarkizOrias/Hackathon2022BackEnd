@@ -6,7 +6,7 @@ import "./ProofOfProp.sol";
 
 contract ProofOfPropCreator {
     mapping(address => address[]) private addressToContract;
-    ProofOfProp[] private certificatesStorageArray;
+    ProofOfProp[] public certificatesStorageArray;
 
     mapping(address => uint256) public addressToAmountFunded; // MO
     address[] public propClients; // MO
@@ -42,7 +42,7 @@ contract ProofOfPropCreator {
         // ToDo :
         // To use this function client has to pay >= minimumFee.
         // Money All Clients pay should be stored on ProofOfPropCreator Contract, so as owners of that Contract can withdraw it.
-        require(msg.value >= getMinimumFee(), "Not Enough ETH Sir, you have to pay to create certificate!");
+        require(msg.value >= getMinimumFee(), "Not Enough ETH, you have to pay to create certificate!");
         ProofOfProp certificateStorage = new ProofOfProp(
             _certificate,
             _date,
@@ -93,5 +93,12 @@ contract ProofOfPropCreator {
     // ToDo: Add onlyOwner parameter
     function withdraw() public payable {
         payable(msg.sender).transfer(address(this).balance);
+    }
+
+    // Niferu: Function Created For Test's Purposes
+    function arrayLengthGetter() public view returns (uint, uint) {
+        uint cert_array = certificatesStorageArray.length;
+        uint clients_array = propClients.length;
+        return (cert_array, clients_array);
     }
 }
