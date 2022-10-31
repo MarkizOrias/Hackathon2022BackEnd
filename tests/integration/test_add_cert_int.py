@@ -9,7 +9,7 @@ import time, pytest
 def test_add_certificate():
     # Arrange
     if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
-        pytest.skip("Only for local testing")
+        pytest.skip("Only for integration testing")
     account = get_account()
     creator = deploy_POP_Creator()
     raw_array, raw_client_array = creator.arrayLengthGetter()
