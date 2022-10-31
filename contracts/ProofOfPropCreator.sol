@@ -8,8 +8,8 @@ contract ProofOfPropCreator {
     mapping(address => address[]) public addressToContract;
     ProofOfProp[] private certificatesStorageArray;
 
-    mapping(address => uint256) public addressToAmountFunded; // MO
-    address[] public propClients; // MO
+    mapping(address => uint256) private addressToAmountFunded; // MO
+    address[] private propClients; // MO
 
     uint256 public usdEntryFee; // variable storing minimum fee
     AggregatorV3Interface internal ethUsdPriceFeed;
