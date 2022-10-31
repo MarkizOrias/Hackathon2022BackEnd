@@ -1,18 +1,19 @@
-
 from brownie import ProofOfPropCreator, MockV3Aggregator, network, config
 from scripts.helpful_scripts import (
     deploy_mocks,
     get_account,
     LOCAL_BLOCKCHAIN_ENVIRONMENTS,
 )
+from scripts.get_hash import hash_file, user_input
 
 
 def main():
-    deploy_POP_Creator() # Neftyr: deploy creator contract (factory)
+
+    deploy_POP_Creator()  # Neftyr: deploy creator contract (factory)
     # fund() # Disabled as requested
-    show_balance() # Neftyr: show balance before any deployments
-    deploy_POP() # Neftyr: deploy contract for Client
-    show_balance() # Neftyr: show balance after client certificate deployment
+    show_balance()  # Neftyr: show balance before any deployments
+    deploy_POP()  # Neftyr: deploy contract for Client
+    show_balance()  # Neftyr: show balance after client certificate deployment
 
 
 def deploy_POP_Creator():
@@ -66,16 +67,16 @@ def deploy_POP():
     account = get_account()
     proof_of_prop_creator = ProofOfPropCreator[-1]
     # Just to make sure fee will be covered, add some Wei to it: 100000000
-    fee = proof_of_prop_creator.getMinimumFee() + 10 ** 8
+    fee = proof_of_prop_creator.getMinimumFee() + 10**8
     # Below deploy is paid from {"from": account} -> so we have to put account of our client here.
     pop_deploy = proof_of_prop_creator.addCertificate(
         "certificate",
         "date",
         "title",
-        account, # Niferu: "proof_of_prop_creator" changed into "account" as owner of generated cert is our Client.
+        account,  # Niferu: "proof_of_prop_creator" changed into "account" as owner of generated cert is our Client.
         "name",
         "additional",
-        "hash",
+        hash_file(user_input),
         {"from": account, "value": fee},
     )
     pop_deploy.wait(1)

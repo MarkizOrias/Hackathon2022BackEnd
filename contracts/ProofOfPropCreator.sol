@@ -14,9 +14,22 @@ contract ProofOfPropCreator {
     uint256 public usdEntryFee; // variable storing minimum fee
     AggregatorV3Interface internal ethUsdPriceFeed;
 
+    address public owner;
+
+    modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Your account address is not an owner of the contract"
+        );
+        //run this than...
+        _;
+        //...all the rest
+    }
+
     constructor(address _priceFeedAddress) {
         ethUsdPriceFeed = AggregatorV3Interface(_priceFeedAddress); // Assignment of price feed variable
         usdEntryFee = 50 * (10**18);
+        owner = msg.sender;
     }
 
     // MO: created fund function, moved require from addCertificate => disabled as requested
@@ -42,7 +55,10 @@ contract ProofOfPropCreator {
         // ToDo :
         // To use this function client has to pay >= minimumFee.
         // Money All Clients pay should be stored on ProofOfPropCreator Contract, so as owners of that Contract can withdraw it.
-        require(msg.value >= getMinimumFee(), "Not Enough ETH, you have to pay to create certificate!");
+        require(
+            msg.value >= getMinimumFee(),
+            "Not Enough ETH, you have to pay to create certificate!"
+        );
         ProofOfProp certificateStorage = new ProofOfProp(
             _certificate,
             _date,
@@ -84,21 +100,23 @@ contract ProofOfPropCreator {
 
     // MO: testing purpose - read balance during development. REMOVE IN PRODUCTION VERSION!!!
     // Neftyr: ToDo: Add onlyOwner parameter, so we as owners can check balance of our creator contract
-    function showBalance() public view returns (uint256) {
+    function showBalance() public view onlyOwner returns (uint256) {
         uint256 POPbalance = address(this).balance;
         return POPbalance;
     }
 
     // ToDo: Below function allows us as Owners of this contract to withdraw money gathered on this contract.
     // ToDo: Add onlyOwner parameter
-    function withdraw() public payable {
+
+    function withdraw() public payable onlyOwner {
+        require(msg.sender == owner);
         payable(msg.sender).transfer(address(this).balance);
     }
 
     // Niferu: Function Created For Test's Purposes
-    function arrayLengthGetter() public view returns (uint, uint) {
-        uint cert_array = certificatesStorageArray.length;
-        uint clients_array = propClients.length;
+    function arrayLengthGetter() public view returns (uint256, uint256) {
+        uint256 cert_array = certificatesStorageArray.length;
+        uint256 clients_array = propClients.length;
         return (cert_array, clients_array);
     }
 }
