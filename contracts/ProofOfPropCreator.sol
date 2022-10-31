@@ -5,8 +5,8 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./ProofOfProp.sol";
 
 contract ProofOfPropCreator {
-    mapping(address => address[]) private addressToContract;
-    ProofOfProp[] public certificatesStorageArray;
+    mapping(address => address[]) public addressToContract;
+    ProofOfProp[] private certificatesStorageArray;
 
     mapping(address => uint256) public addressToAmountFunded; // MO
     address[] public propClients; // MO
