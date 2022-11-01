@@ -1,5 +1,6 @@
 
 from brownie import network
+from scripts.get_hash import hash_file, user_input
 from scripts.deploy_creator import deploy_POP_Creator
 from scripts.helpful_scripts import get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 import time, pytest
@@ -22,10 +23,10 @@ def test_add_certificate():
         account,
         "name",
         "additional",
-        "hash",
+        hash_file(user_input),
         {"from": account, "value": add_cert_fee}
     )
-    time.sleep(180)
+    time.sleep(15)
     # Assert
     cert_array, client_array = creator.arrayLengthGetter({"from": account})
     assert raw_array == 0

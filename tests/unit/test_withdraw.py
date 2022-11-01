@@ -1,5 +1,6 @@
 
 from brownie import network, exceptions, accounts
+from scripts.get_hash import hash_file, user_input
 from scripts.deploy_creator import deploy_POP_Creator
 from scripts.helpful_scripts import get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 import pytest
@@ -19,7 +20,7 @@ def test_withdraw():
         account,
         "name",
         "additional",
-        "hash",
+        hash_file(user_input),
         {"from": account, "value": add_cert_fee}
     )
     tx.wait(1)

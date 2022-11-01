@@ -2,6 +2,7 @@
 from web3 import Web3
 from brownie import network
 from scripts.deploy_mocks import deploy_mocks
+from scripts.get_hash import hash_file, user_input
 from scripts.deploy_creator import deploy_POP_Creator
 from scripts.helpful_scripts import get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 import pytest
@@ -22,7 +23,7 @@ def test_get_last_certificate():
         account,
         "name",
         "additional",
-        "hash",
+        hash_file(user_input),
         {"from": account, "value": add_cert_fee}
     )
     tx.wait(1)
@@ -49,7 +50,7 @@ def test_get_certificate_you_own():
         account,
         "name",
         "additional",
-        "hash",
+        hash_file(user_input),
         {"from": account, "value": add_cert_fee}
     )
     tx.wait(1)
