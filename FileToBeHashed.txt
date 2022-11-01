@@ -1,1 +1,0 @@
-This file meant to be hashed and its hash should be pushed into the contract.
