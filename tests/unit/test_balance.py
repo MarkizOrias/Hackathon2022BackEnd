@@ -11,7 +11,7 @@ def test_show_balance():
         pytest.skip("Only for local testing")
     account = get_account()
     creator = deploy_POP_Creator()
-    add_cert_fee = creator.getMinimumFee() + 100
+    add_cert_fee = creator.getMinimumFee({"from": account}) + 100
     # Act
     tx = creator.addCertificate(
         "certificate",
@@ -25,5 +25,5 @@ def test_show_balance():
     )
     tx.wait(1)
     # Assert
-    current_balance = creator.showBalance()
+    current_balance = creator.showBalance({"from": account})
     assert current_balance > 0

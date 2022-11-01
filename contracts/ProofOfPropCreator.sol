@@ -2,13 +2,16 @@
 pragma solidity ^0.8.0;
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ProofOfProp.sol";
 
-contract ProofOfPropCreator {
+contract ProofOfPropCreator is Ownable {
     mapping(address => address[]) public addressToContract;
     ProofOfProp[] private certificatesStorageArray;
 
+    // NI: ToDo -> To be removed after testing on production example.
     mapping(address => uint256) private addressToAmountFunded; // MO
+    // NI: ToDo -> To be removed after testing on production example.
     address[] private propClients; // MO
 
     uint256 public usdEntryFee; // variable storing minimum fee
@@ -19,6 +22,7 @@ contract ProofOfPropCreator {
         usdEntryFee = 50 * (10**18);
     }
 
+    // NI: ToDo -> To be removed after testing on production example.
     // MO: created fund function, moved require from addCertificate => disabled as requested
     // function fund() public payable {
     //     require(
@@ -60,7 +64,7 @@ contract ProofOfPropCreator {
     }
 
     // Neftyr: function that returns last certificate
-    function getLastCertificate() public view returns (address) {
+    function getLastCertificate() public view onlyOwner returns (address) {
         uint256 lastIndex = certificatesStorageArray.length - 1;
         return address(certificatesStorageArray[lastIndex]);
     }
@@ -75,7 +79,7 @@ contract ProofOfPropCreator {
     }
 
     // Below Function Defines Minimal Fee To Use addCertificate() function.
-    function getMinimumFee() public view returns (uint256) {
+    function getMinimumFee() public view onlyOwner returns (uint256) {
         (, int256 price, , , ) = ethUsdPriceFeed.latestRoundData(); // Takes this from AggregatorV3 latestRoundData
         uint256 adjustedPrice = uint256(price) * 10**10; // adjustedPrice has to be expressed with 18 decimals. From Chainlink pricefeed, we know ETH/USD has 8 decimals, so we need to multiply by 10^10
         uint256 costToEnter = (usdEntryFee * 10**18) / adjustedPrice; // We cannot return decimals, hence we need to express 50$ with 50 * 10*18 / 2000 (adjusted price of ETH)
@@ -84,19 +88,19 @@ contract ProofOfPropCreator {
 
     // MO: testing purpose - read balance during development. REMOVE IN PRODUCTION VERSION!!!
     // Neftyr: ToDo: Add onlyOwner parameter, so we as owners can check balance of our creator contract
-    function showBalance() public view returns (uint256) {
+    function showBalance() public view onlyOwner returns (uint256) {
         uint256 POPbalance = address(this).balance;
         return POPbalance;
     }
 
     // ToDo: Below function allows us as Owners of this contract to withdraw money gathered on this contract.
     // ToDo: Add onlyOwner parameter
-    function withdraw() public payable {
+    function withdraw() public payable onlyOwner {
         payable(msg.sender).transfer(address(this).balance);
     }
 
     // Niferu: Function Created For Test's Purposes
-    function arrayLengthGetter() public view returns (uint, uint) {
+    function arrayLengthGetter() public view onlyOwner returns (uint, uint) {
         uint cert_array = certificatesStorageArray.length;
         uint clients_array = propClients.length;
         return (cert_array, clients_array);

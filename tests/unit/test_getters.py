@@ -13,7 +13,7 @@ def test_get_last_certificate():
         pytest.skip("Only for local testing")
     account = get_account()
     creator = deploy_POP_Creator()
-    add_cert_fee = creator.getMinimumFee() + 100
+    add_cert_fee = creator.getMinimumFee({"from": account}) + 100
     # Act
     tx = creator.addCertificate(
         "certificate",
@@ -29,7 +29,7 @@ def test_get_last_certificate():
     # Assert
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local testing")
-    get_last_cert = creator.getLastCertificate()
+    get_last_cert = creator.getLastCertificate({"from": account})
     get_cert = creator.addressToContract(account, 0)
     assert get_last_cert == get_cert
 
@@ -40,7 +40,7 @@ def test_get_certificate_you_own():
         pytest.skip("Only for local testing")
     account = get_account()
     creator = deploy_POP_Creator()
-    add_cert_fee = creator.getMinimumFee() + 100
+    add_cert_fee = creator.getMinimumFee({"from": account}) + 100
     # Act
     tx = creator.addCertificate(
         "certificate",
@@ -64,10 +64,11 @@ def test_get_minimum_fee():
     # Arrange
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local testing")
+    account = get_account()
     deploy_mocks()
     creator = deploy_POP_Creator()
     # Act
-    fee = creator.getMinimumFee()
+    fee = creator.getMinimumFee({"from": account})
     fee_in_eth = Web3.fromWei(fee, "ether")
     print(f'ETH Fee: {fee_in_eth}')
     # Assert

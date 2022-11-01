@@ -12,8 +12,8 @@ def test_add_certificate():
         pytest.skip("Only for integration testing")
     account = get_account()
     creator = deploy_POP_Creator()
-    raw_array, raw_client_array = creator.arrayLengthGetter()
-    add_cert_fee = creator.getMinimumFee() + 100
+    raw_array, raw_client_array = creator.arrayLengthGetter({"from": account})
+    add_cert_fee = creator.getMinimumFee({"from": account}) + 100
     # Act
     creator.addCertificate(
         "certificate",
@@ -27,6 +27,6 @@ def test_add_certificate():
     )
     time.sleep(180)
     # Assert
-    cert_array, client_array = creator.arrayLengthGetter()
+    cert_array, client_array = creator.arrayLengthGetter({"from": account})
     assert raw_array == 0
     assert cert_array == 1

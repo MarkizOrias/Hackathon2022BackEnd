@@ -11,7 +11,7 @@ def test_withdraw():
         pytest.skip("Only for local testing")
     account = get_account()
     creator = deploy_POP_Creator()
-    add_cert_fee = creator.getMinimumFee() + 100
+    add_cert_fee = creator.getMinimumFee({"from": account}) + 100
     tx = creator.addCertificate(
         "certificate",
         "date",
@@ -23,11 +23,11 @@ def test_withdraw():
         {"from": account, "value": add_cert_fee}
     )
     tx.wait(1)
-    balance_before = creator.showBalance()
+    balance_before = creator.showBalance({"from": account})
     # Act
-    tx_withdraw = creator.withdraw()
+    tx_withdraw = creator.withdraw({"from": account})
     tx_withdraw.wait(1)
-    balance_after = creator.showBalance()
+    balance_after = creator.showBalance({"from": account})
     print(f'Before Withdraw: {balance_before}')
     print(f'After Withdraw: {balance_after}')
     # Assert
