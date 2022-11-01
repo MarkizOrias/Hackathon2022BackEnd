@@ -1,10 +1,12 @@
 
 from brownie import ProofOfPropCreator, MockV3Aggregator, network, config
+from scripts.get_hash import hash_file, user_input
 from scripts.helpful_scripts import (
     deploy_mocks,
     get_account,
     LOCAL_BLOCKCHAIN_ENVIRONMENTS,
 )
+import time
 
 
 def main():
@@ -36,12 +38,13 @@ def deploy_POP_Creator():
         {"from": account},
         publish_source=config["networks"][network.show_active()].get("verify"),
     )
-
+    time.sleep(5)
     # check Reading contract in testnet (goerli etherscan)
     print(f"Contract depolyed to {proof_of_prop_creator.address}")
     return proof_of_prop_creator
 
 
+# NI: TODO -> To be removed after testing on production example.
 # MO: Disabled as it is not required
 # def fund():
 #     proof_of_prop_creator = ProofOfPropCreator[-1]
@@ -72,13 +75,14 @@ def deploy_POP():
         "certificate",
         "date",
         "title",
-        account, # Niferu: "proof_of_prop_creator" changed into "account" as owner of generated cert is our Client.
+        account, # NI: "proof_of_prop_creator" changed into "account" as owner of generated cert is our Client.
         "name",
         "additional",
-        "hash",
+        hash_file(user_input),
         {"from": account, "value": fee},
     )
     pop_deploy.wait(1)
     lastCert = proof_of_prop_creator.getLastCertificate()
     print(f"Transaction: {pop_deploy}")
     print(f"Last Certificate: {lastCert}")
+    # NI: TODO -> add return pop_deploy (In order to change contract owner)

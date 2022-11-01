@@ -3,7 +3,7 @@
 # importing the hashlib module
 import hashlib
 
-user_input = r"file directory"
+user_input = r".\\FileToBeHashed.txt"
 
 
 def hash_file(filename):
