@@ -59,8 +59,9 @@ def deploy_POP_Creator():
 
 # MO: testing purpose - read balance during development
 def show_balance():
+    account = get_account()
     proof_of_prop_creator = ProofOfPropCreator[-1]
-    current_balance = proof_of_prop_creator.showBalance()
+    current_balance = proof_of_prop_creator.showBalance({"from": account})
     print(f"Current balance of creator contract is: {current_balance}")
 
 
@@ -69,7 +70,7 @@ def deploy_POP():
     account = get_account()
     proof_of_prop_creator = ProofOfPropCreator[-1]
     # Just to make sure fee will be covered, add some Wei to it: 100000000
-    fee = proof_of_prop_creator.getMinimumFee() + 10 ** 8
+    fee = proof_of_prop_creator.getMinimumFee({"from": account}) + 10 ** 8
     # Below deploy is paid from {"from": account} -> so we have to put account of our client here.
     pop_deploy = proof_of_prop_creator.addCertificate(
         "certificate",
@@ -82,7 +83,7 @@ def deploy_POP():
         {"from": account, "value": fee},
     )
     pop_deploy.wait(1)
-    lastCert = proof_of_prop_creator.getLastCertificate()
+    lastCert = proof_of_prop_creator.getLastCertificate({"from": account})
     print(f"Transaction: {pop_deploy}")
     print(f"Last Certificate: {lastCert}")
     # NI: TODO -> add return pop_deploy (In order to change contract owner)

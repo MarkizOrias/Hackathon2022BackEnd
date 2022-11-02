@@ -35,7 +35,7 @@ def test_get_last_certificate():
     assert get_last_cert == get_cert
 
 
-def test_get_certificate_you_own():
+def test_get_certificates_you_own():
     # Arrange
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local testing")
@@ -57,7 +57,7 @@ def test_get_certificate_you_own():
     # Assert
     index = 0
     get_cert = creator.addressToContract(account, index)
-    get_owned = creator.getCertificateYouOwn(account)
+    get_owned = creator.getCertificatesYouOwn(account)
     assert get_cert == get_owned[index]
 
 
