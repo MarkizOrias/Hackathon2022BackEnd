@@ -14,7 +14,7 @@ def test_get_last_certificate():
         pytest.skip("Only for local testing")
     account = get_account()
     creator = deploy_POP_Creator()
-    add_cert_fee = creator.getMinimumFee({"from": account}) + 100
+    add_cert_fee = creator.getMinimumFee() + 100
     # Act
     tx = creator.addCertificate(
         "certificate",
@@ -41,7 +41,7 @@ def test_get_certificates_you_own():
         pytest.skip("Only for local testing")
     account = get_account()
     creator = deploy_POP_Creator()
-    add_cert_fee = creator.getMinimumFee({"from": account}) + 100
+    add_cert_fee = creator.getMinimumFee() + 100
     # Act
     tx = creator.addCertificate(
         "certificate",
@@ -69,7 +69,7 @@ def test_get_minimum_fee():
     deploy_mocks()
     creator = deploy_POP_Creator()
     # Act
-    fee = creator.getMinimumFee({"from": account})
+    fee = creator.getMinimumFee()
     fee_in_eth = Web3.fromWei(fee, "ether")
     print(f'ETH Fee: {fee_in_eth}')
     # Assert

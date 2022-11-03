@@ -10,10 +10,9 @@ def test_get_minimum_fee():
     # Arrange
     if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for integration testing")
-    account = get_account()
     creator = deploy_POP_Creator()
     # Act
-    fee = creator.getMinimumFee({"from": account})
+    fee = creator.getMinimumFee()
     fee_in_eth = Web3.fromWei(fee, "ether")
     print(f'ETH Fee: {fee_in_eth}')
     # Assert

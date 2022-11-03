@@ -13,7 +13,7 @@ def test_add_certificate():
         pytest.skip("Only for local testing")
     account = get_account()
     creator = deploy_POP_Creator()
-    raw_array, raw_client_array = creator.arrayLengthGetter({"from": account})
+    raw_array, raw_client_array = creator.arrayLengthGetter(account, {"from": account})
     add_cert_fee = creator.getMinimumFee({"from": account}) + 100
     # Act
     tx = creator.addCertificate(
@@ -28,6 +28,6 @@ def test_add_certificate():
     )
     tx.wait(1)
     # Assert
-    cert_array, client_array = creator.arrayLengthGetter({"from": account})
+    cert_array, client_array = creator.arrayLengthGetter(account, {"from": account})
     assert raw_array == 0
     assert cert_array == 1
