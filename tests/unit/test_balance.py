@@ -12,7 +12,7 @@ def test_show_balance():
         pytest.skip("Only for local testing")
     account = get_account()
     creator = deploy_POP_Creator()
-    add_cert_fee = creator.getMinimumFee({"from": account}) + 100
+    add_cert_fee = creator.getMinimumFee() + 100
     # Act
     tx = creator.addCertificate(
         "certificate",

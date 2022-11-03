@@ -1,4 +1,6 @@
 __pycache__
+.env
+.gitignore
 .history
 .hypothesis/
 build/

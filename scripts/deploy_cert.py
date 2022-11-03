@@ -14,7 +14,7 @@ def deploy_certificate():
     account = get_account()
     proof_of_prop_creator = ProofOfPropCreator[-1]
     # Just to make sure fee will be covered, add some Wei to it: 100000000
-    fee = proof_of_prop_creator.getMinimumFee({"from": account}) + 10 ** 8
+    fee = proof_of_prop_creator.getMinimumFee() + 10 ** 8
     # Below deploy is paid from {"from": account} -> so we have to put account of our client here.
     pop_deploy = proof_of_prop_creator.addCertificate(
         "certificate",
