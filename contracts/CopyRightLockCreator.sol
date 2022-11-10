@@ -3,12 +3,12 @@ pragma solidity ^0.8.0;
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./ProofOfProp.sol";
+import "./CopyRightLock.sol";
 
-contract ProofOfPropCreator is Ownable {
+contract CopyRightLockCreator is Ownable {
     
     mapping(address => address[]) public addressToContract;
-    ProofOfProp[] private certificatesStorageArray;
+    CopyRightLock[] private certificatesStorageArray;
 
     uint256 public usdEntryFee; // variable storing minimum fee
     AggregatorV3Interface internal ethUsdPriceFeed;
@@ -28,9 +28,9 @@ contract ProofOfPropCreator is Ownable {
         string memory _additional,
         string memory _hash
     ) public payable {
-        // Money All Clients pay should be stored on ProofOfPropCreator Contract, so as owners of that Contract we can withdraw it.
+        // Money All Clients pay should be stored on CopyRightLockCreator Contract, so as owners of that Contract we can withdraw it.
         require(msg.value >= getMinimumFee(), "Not Enough ETH, you have to pay to create certificate!");
-        ProofOfProp certificateStorage = new ProofOfProp(
+        CopyRightLock certificateStorage = new CopyRightLock(
             _certificate,
             _date,
             _title,

@@ -1,7 +1,7 @@
 
 from brownie import network, exceptions, accounts
 from scripts.get_hash import hash_file, user_input
-from scripts.deploy_creator import deploy_POP_Creator
+from scripts.deploy_creator import deploy_CRL_Creator
 from scripts.helpful_scripts import get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 import pytest
 
@@ -11,7 +11,7 @@ def test_withdraw():
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local testing")
     account = get_account()
-    creator = deploy_POP_Creator()
+    creator = deploy_CRL_Creator()
     add_cert_fee = creator.getMinimumFee() + 100
     tx = creator.addCertificate(
         "certificate",
@@ -39,7 +39,7 @@ def test_withdraw():
 def test_only_owner_can_withdraw():
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local testing")
-    creator = deploy_POP_Creator()
+    creator = deploy_CRL_Creator()
     thief_account = accounts.add()
     with pytest.raises(exceptions.VirtualMachineError):
         creator.withdraw({"from": thief_account})

@@ -1,7 +1,7 @@
 
-from brownie import accounts, network, ProofOfPropCreator
+from brownie import accounts, network, CopyRightLockCreator
 from scripts.get_hash import hash_file, user_input
-from scripts.deploy_creator import deploy_POP_Creator
+from scripts.deploy_creator import deploy_CRL_Creator
 from scripts.helpful_scripts import LOCAL_BLOCKCHAIN_ENVIRONMENTS
 import pytest
 
@@ -10,8 +10,8 @@ def test_transfer_ownership():
     # Arrange
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local testing")
-    deploy_POP_Creator()
-    creator_contract = ProofOfPropCreator[-1]
+    deploy_CRL_Creator()
+    creator_contract = CopyRightLockCreator[-1]
     account_one = accounts[0]
     account_two = accounts[1]
     account_three = accounts[2]

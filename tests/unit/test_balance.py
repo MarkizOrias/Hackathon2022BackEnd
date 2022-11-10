@@ -1,7 +1,7 @@
 
 from brownie import network
 from scripts.get_hash import hash_file, user_input
-from scripts.deploy_creator import deploy_POP_Creator
+from scripts.deploy_creator import deploy_CRL_Creator
 from scripts.helpful_scripts import get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 import pytest
 
@@ -11,7 +11,7 @@ def test_show_balance():
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local testing")
     account = get_account()
-    creator = deploy_POP_Creator()
+    creator = deploy_CRL_Creator()
     add_cert_fee = creator.getMinimumFee() + 100
     # Act
     tx = creator.addCertificate(
