@@ -1,7 +1,7 @@
 
 from brownie import network
 from scripts.get_hash import hash_file, user_input
-from scripts.deploy_creator import deploy_POP_Creator
+from scripts.deploy_creator import deploy_CRL_Creator
 from scripts.helpful_scripts import get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 import time, pytest
 
@@ -12,7 +12,7 @@ def test_add_certificate():
     if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for integration testing")
     account = get_account()
-    creator = deploy_POP_Creator()
+    creator = deploy_CRL_Creator()
     raw_array, raw_client_array = creator.arrayLengthGetter(account, {"from": account})
     add_cert_fee = creator.getMinimumFee() + 100
     # Act

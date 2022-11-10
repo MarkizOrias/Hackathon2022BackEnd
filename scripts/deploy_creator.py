@@ -1,5 +1,5 @@
 
-from brownie import ProofOfPropCreator, MockV3Aggregator, network, config
+from brownie import CopyRightLockCreator, MockV3Aggregator, network, config
 from scripts.get_hash import hash_file, user_input
 from scripts.helpful_scripts import (
     deploy_mocks,
@@ -10,14 +10,14 @@ import time
 
 
 def main():
-    deploy_POP_Creator() # Neftyr: deploy creator contract (factory)
+    deploy_CRL_Creator() # Neftyr: deploy creator contract (factory)
     # fund() # Disabled as requested
     show_balance() # Neftyr: show balance before any deployments
-    deploy_POP() # Neftyr: deploy contract for Client
+    deploy_CRL() # Neftyr: deploy contract for Client
     show_balance() # Neftyr: show balance after client certificate deployment
 
 
-def deploy_POP_Creator():
+def deploy_CRL_Creator():
     account = get_account()
 
     # pass the price feed address to the contract
@@ -33,7 +33,7 @@ def deploy_POP_Creator():
         print(f"price_feed_address {price_feed_address}")
         # use the most recent data from the MockV3Aggregator
 
-    proof_of_prop_creator = ProofOfPropCreator.deploy(
+    proof_of_prop_creator = CopyRightLockCreator.deploy(
         price_feed_address,
         {"from": account},
         publish_source=config["networks"][network.show_active()].get("verify"),
@@ -47,7 +47,7 @@ def deploy_POP_Creator():
 # NI: TODO -> To be removed after testing on production example.
 # MO: Disabled as it is not required
 # def fund():
-#     proof_of_prop_creator = ProofOfPropCreator[-1]
+#     proof_of_prop_creator = CopyRightLockCreator[-1]
 #     account = get_account()
 #     minimum_fee = proof_of_prop_creator.getMinimumFee()
 #     print(minimum_fee)
@@ -60,15 +60,15 @@ def deploy_POP_Creator():
 # MO: testing purpose - read balance during development
 def show_balance():
     account = get_account()
-    proof_of_prop_creator = ProofOfPropCreator[-1]
+    proof_of_prop_creator = CopyRightLockCreator[-1]
     current_balance = proof_of_prop_creator.showBalance({"from": account})
     print(f"Current balance of creator contract is: {current_balance}")
 
 
 # Neftyr: To Be Moved Into "deploy_cert.py"
-def deploy_POP():
+def deploy_CRL():
     account = get_account()
-    proof_of_prop_creator = ProofOfPropCreator[-1]
+    proof_of_prop_creator = CopyRightLockCreator[-1]
     # Just to make sure fee will be covered, add some Wei to it: 100000000
     fee = proof_of_prop_creator.getMinimumFee({"from": account}) + 10 ** 8
     # Below deploy is paid from {"from": account} -> so we have to put account of our client here.

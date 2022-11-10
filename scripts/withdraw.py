@@ -1,5 +1,5 @@
 
-from brownie import ProofOfPropCreator
+from brownie import CopyRightLockCreator
 from scripts.helpful_scripts import get_account
 
 
@@ -9,7 +9,7 @@ def main():
 
 # Neftyr: Below Will Withdraw All Funds From Creator Contract
 def withdraw():
-    creator = ProofOfPropCreator[-1]
+    creator = CopyRightLockCreator[-1]
     account = get_account()
     previous_balance = creator.showBalance({"from": account})
     print(f"Funds Able To Withdraw: {previous_balance}")

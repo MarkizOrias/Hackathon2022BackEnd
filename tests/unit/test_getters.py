@@ -3,7 +3,7 @@ from web3 import Web3
 from brownie import network
 from scripts.deploy_mocks import deploy_mocks
 from scripts.get_hash import hash_file, user_input
-from scripts.deploy_creator import deploy_POP_Creator
+from scripts.deploy_creator import deploy_CRL_Creator
 from scripts.helpful_scripts import get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 import pytest
 
@@ -13,7 +13,7 @@ def test_get_last_certificate():
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local testing")
     account = get_account()
-    creator = deploy_POP_Creator()
+    creator = deploy_CRL_Creator()
     add_cert_fee = creator.getMinimumFee() + 100
     # Act
     tx = creator.addCertificate(
@@ -40,7 +40,7 @@ def test_get_certificates_you_own():
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local testing")
     account = get_account()
-    creator = deploy_POP_Creator()
+    creator = deploy_CRL_Creator()
     add_cert_fee = creator.getMinimumFee() + 100
     # Act
     tx = creator.addCertificate(
@@ -67,7 +67,7 @@ def test_get_minimum_fee():
         pytest.skip("Only for local testing")
     account = get_account()
     deploy_mocks()
-    creator = deploy_POP_Creator()
+    creator = deploy_CRL_Creator()
     # Act
     fee = creator.getMinimumFee()
     fee_in_eth = Web3.fromWei(fee, "ether")
