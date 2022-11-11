@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./CopyRightLock.sol";
 
 contract CopyRightLockCreator is Ownable {
-    
     mapping(address => address[]) public addressToContract;
     CopyRightLock[] private certificatesStorageArray;
 
@@ -29,7 +28,10 @@ contract CopyRightLockCreator is Ownable {
         string memory _hash
     ) public payable {
         // Money All Clients pay should be stored on CopyRightLockCreator Contract, so as owners of that Contract we can withdraw it.
-        require(msg.value >= getMinimumFee(), "Not Enough ETH, you have to pay to create certificate!");
+        require(
+            msg.value >= getMinimumFee(),
+            "Not Enough ETH, you have to pay to create certificate!"
+        );
         CopyRightLock certificateStorage = new CopyRightLock(
             _certificate,
             _date,
@@ -61,7 +63,7 @@ contract CopyRightLockCreator is Ownable {
         return addressToContract[_yourAddress];
     }
 
-    // NI: Below function defines minimal fee's to use addCertificate() and transferOwnership() functions.
+    // NI: Below function defines minimal fee's to use addCertificate() and transOwnership() functions.
     function getMinimumFee() public view returns (uint256) {
         (, int256 price, , , ) = ethUsdPriceFeed.latestRoundData(); // Takes this from AggregatorV3 latestRoundData
         uint256 adjustedPrice = uint256(price) * 10**10; // adjustedPrice has to be expressed with 18 decimals. From Chainlink pricefeed, we know ETH/USD has 8 decimals, so we need to multiply by 10^10
@@ -81,28 +83,45 @@ contract CopyRightLockCreator is Ownable {
     }
 
     // NI: Function created for test's purposes
-    function arrayLengthGetter(address _yourAddress) public view onlyOwner returns (uint, uint) {
-        uint all_certs_array = certificatesStorageArray.length;
-        uint clients_owned_certs_array = getCertificatesYouOwn(_yourAddress).length;
+    function arrayLengthGetter(address _yourAddress)
+        public
+        view
+        onlyOwner
+        returns (uint256, uint256)
+    {
+        uint256 all_certs_array = certificatesStorageArray.length;
+        uint256 clients_owned_certs_array = getCertificatesYouOwn(_yourAddress)
+            .length;
         return (all_certs_array, clients_owned_certs_array);
     }
 
     // NI: Function to change owner of certificate
-    function transferOwnership(address current_owner, address new_owner, address cert_address) public payable {
-        
-        require(current_owner == msg.sender, "You Are Not Owner Of This Certificate!");
-        require(msg.value >= getMinimumFee(), "Not Enough ETH, you have to pay to create certificate!");
-        
-        address[] memory current_owner_certs = getCertificatesYouOwn(current_owner);
-        
-        delete(addressToContract[current_owner]);
+    function transOwnership(
+        address current_owner,
+        address new_owner,
+        address cert_address
+    ) public payable {
+        require(
+            current_owner == msg.sender,
+            "You Are Not Owner Of This Certificate!"
+        );
+        require(
+            msg.value >= getMinimumFee(),
+            "Not Enough ETH, you have to pay to create certificate!"
+        );
 
-        // NI: Below transfer ownership method with require() statement above will prevent any malicious attempts of ownership transfers.        
-        for (uint i=0; i < current_owner_certs.length; i++){
-            if (current_owner_certs[i] == cert_address){
+        address[] memory current_owner_certs = getCertificatesYouOwn(
+            current_owner
+        );
+
+        delete (addressToContract[current_owner]);
+
+        // NI: Below transfer ownership method with require() statement above will prevent any malicious attempts of ownership transfers.
+        for (uint256 i = 0; i < current_owner_certs.length; i++) {
+            if (current_owner_certs[i] == cert_address) {
                 addressToContract[new_owner].push(cert_address);
             }
-            if (current_owner_certs[i] != cert_address){
+            if (current_owner_certs[i] != cert_address) {
                 addressToContract[current_owner].push(current_owner_certs[i]);
             }
         }
