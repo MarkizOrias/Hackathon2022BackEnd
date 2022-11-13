@@ -11,7 +11,7 @@ https://floral-sky
 
 # Steps To Run
 
-**1. Open VSCode**
+**1. Download And Open VSCode**
 
 Or other compiler for multiple programming languages.
 
