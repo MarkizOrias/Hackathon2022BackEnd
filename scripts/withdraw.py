@@ -16,7 +16,7 @@ def withdraw_from_exact_contract():
     account = get_account()
     creator = Contract.from_explorer(specific_address)
     previous_balance = creator.showBalance({"from": account})
-    formatted_balance = float(previous_balance / 1018)
+    formatted_balance = float(previous_balance / 10**18)
     print(f"Funds Able To Withdraw: {formatted_balance} ETH")
     tx = creator.withdraw({"from": account})
     tx.wait(1)
@@ -28,7 +28,7 @@ def balance_from_exact_contract():
     account = get_account()
     creator = Contract.from_explorer(specific_address)
     previous_balance = creator.showBalance({"from": account})
-    formatted_balance = float(previous_balance / 1018)
+    formatted_balance = float(previous_balance / 10**18)
     print(f"Balance: {formatted_balance}")
 
 
