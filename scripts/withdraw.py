@@ -21,7 +21,8 @@ def withdraw_from_exact_contract():
     tx = creator.withdraw({"from": account})
     tx.wait(1)
     current_balance = creator.showBalance({"from": account})
-    print(f"Current balance of creator contract is: {current_balance}")
+    format_balance = float(current_balance / 10**18)
+    print(f"Current balance of creator contract is: {format_balance}")
 
 
 def balance_from_exact_contract():
