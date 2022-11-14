@@ -2,7 +2,7 @@ from brownie import Contract, CopyRightLockCreator
 from scripts.helpful_scripts import get_account
 
 # In order to paste "input()" data use: Ctrl + Shift + V
-specific_address = "0x4D87157990574493F39107d3843C5dF3B78f5B2e"
+specific_address = "0x2E3A04Aa1B340C01051e3D20B1d483C69c3668ef"
 
 
 def main():
