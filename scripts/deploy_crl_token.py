@@ -2,9 +2,8 @@ from brownie import CopyRightLocker
 from scripts.helpful_scripts import get_account
 from web3 import Web3
 
-# Supply still to be considered
+# Supply still to be considered as implementing own token is still under development 
 initialSupply = Web3.toWei(1000000000, "ether")
-
 
 def deploy_token():
     account = get_account()
